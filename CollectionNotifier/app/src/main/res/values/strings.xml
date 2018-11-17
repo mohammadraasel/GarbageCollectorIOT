@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Collection Notifier</string>
+    <string name="name">Name</string>
+    <string name="trigger_pin">Trigger Pin</string>
+    <string name="echo_pin">Echo Pin</string>
+    <string name="notify_level">Notify Level</string>
+    <string name="view_all">View All</string>
+    <string name="add_new">Add New</string>
+</resources>

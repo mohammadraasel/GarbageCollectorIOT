@@ -16,9 +16,15 @@ import java.util.List;
 public class BinAdapter extends RecyclerView.Adapter<BinAdapter.ViewHolder> {
 
     private List<Bin> bins;
+    private Listener listener;
 
-    public BinAdapter(List<Bin> bins) {
+    public BinAdapter(List<Bin> bins, Listener listener) {
         this.bins = bins;
+        this.listener = listener;
+    }
+
+    public interface Listener {
+        void onItemClick(Bin bin);
     }
 
     @NonNull
@@ -31,7 +37,7 @@ public class BinAdapter extends RecyclerView.Adapter<BinAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.bind(bins.get(i));
+        viewHolder.bind(bins.get(i), listener);
     }
 
     @Override
@@ -57,10 +63,11 @@ public class BinAdapter extends RecyclerView.Adapter<BinAdapter.ViewHolder> {
             bindViews(itemView);
         }
 
-        public void bind(Bin bin) {
+        public void bind(Bin bin, final Listener listener) {
             textViewBinName.setText(bin.getName());
             textViewBinCleanCount.setText(bin.getCount());
             textViewBinStatus.setText(bin.getStatus());
+            itemView.setOnClickListener(view -> listener.onItemClick(bin));
         }
 
         /**

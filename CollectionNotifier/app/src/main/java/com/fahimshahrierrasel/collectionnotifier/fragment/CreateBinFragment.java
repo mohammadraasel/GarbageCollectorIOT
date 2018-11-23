@@ -21,20 +21,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateBinFragment extends Fragment {
-    /** Android Views **/
     EditText editTextName;
     EditText editTextTrigPin;
     EditText editTextEchoPin;
     EditText editTextNotifyLevel;
     Button buttonViewAll;
     Button buttonAddSensor;
-    /** Android Views **/
 
     private Socket mSocket;
     private String TAG = getClass().getSimpleName();
 
     public CreateBinFragment() {
-
     }
 
     public static CreateBinFragment newInstance() {
@@ -62,7 +59,7 @@ public class CreateBinFragment extends Fragment {
             data.put("notify_level", editTextNotifyLevel.getText().toString());
 
             mSocket.emit("create_sensor", new JSONObject(data));
-            Log.d(TAG, "Data Emitted "+ data.toString());
+            Log.d(TAG, "Data Emitted " + data.toString());
         });
 
         mSocket.on("sensor_created", args -> {
@@ -87,7 +84,7 @@ public class CreateBinFragment extends Fragment {
         return root;
     }
 
-    private void bindViews(View rootView){
+    private void bindViews(View rootView) {
         editTextName = rootView.findViewById(R.id.editText_name);
         editTextTrigPin = rootView.findViewById(R.id.editText_trig_pin);
         editTextEchoPin = rootView.findViewById(R.id.editText_echo_pin);

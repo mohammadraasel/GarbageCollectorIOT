@@ -1,4 +1,4 @@
-package com.fahimshahrierrasel.collectionnotifier;
+package com.fahimshahrierrasel.collectionnotifier.model;
 
 public class Bin {
     private String name, count, status;

@@ -1,4 +1,4 @@
-package com.fahimshahrierrasel.collectionnotifier;
+package com.fahimshahrierrasel.collectionnotifier.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fahimshahrierrasel.collectionnotifier.CollectionNotifier;
+import com.fahimshahrierrasel.collectionnotifier.R;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;

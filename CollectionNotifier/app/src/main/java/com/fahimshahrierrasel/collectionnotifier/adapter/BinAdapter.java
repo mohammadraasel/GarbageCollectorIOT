@@ -1,4 +1,4 @@
-package com.fahimshahrierrasel.collectionnotifier;
+package com.fahimshahrierrasel.collectionnotifier.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.fahimshahrierrasel.collectionnotifier.R;
+import com.fahimshahrierrasel.collectionnotifier.model.Bin;
 
 import java.util.List;
 

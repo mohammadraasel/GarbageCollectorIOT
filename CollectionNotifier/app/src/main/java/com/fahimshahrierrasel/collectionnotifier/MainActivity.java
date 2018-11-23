@@ -1,25 +1,16 @@
 package com.fahimshahrierrasel.collectionnotifier;
 
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.github.nkzawa.emitter.Emitter;
+import com.fahimshahrierrasel.collectionnotifier.adapter.BinAdapter;
+import com.fahimshahrierrasel.collectionnotifier.model.Bin;
 import com.github.nkzawa.socketio.client.Socket;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();

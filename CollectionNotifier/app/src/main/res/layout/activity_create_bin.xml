@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".CreateBin">
+
+
+    <EditText
+        android:id="@+id/triggerPinId"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10sp"
+        android:inputType="number"
+        android:padding="25dp"
+        android:text="Input Trigger Pin" />
+
+    <EditText
+        android:id="@+id/echoPinId"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:padding="25dp"
+        android:layout_marginBottom="10sp"
+        android:text="Input Echo Pin" />
+
+
+    <EditText
+        android:id="@+id/notifyLevelId"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:padding="25dp"
+        android:layout_marginBottom="10sp"
+        android:text="Input Notify Level" />
+
+    <Button
+        android:id="@+id/createBinButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:padding="25dp"
+        android:textSize="20dp"
+        android:text="@string/create_bin" />
+</LinearLayout>

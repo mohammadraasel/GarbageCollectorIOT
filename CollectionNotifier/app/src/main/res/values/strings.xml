@@ -6,4 +6,8 @@
     <string name="notify_level">Notify Level</string>
     <string name="view_all">View All</string>
     <string name="add_new">Add New</string>
+    <string name="bin_text">75% Full</string>
+    <string name="edit">Edit</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
 </resources>

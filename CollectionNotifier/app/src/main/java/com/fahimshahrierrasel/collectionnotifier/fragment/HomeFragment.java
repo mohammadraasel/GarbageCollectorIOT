@@ -23,7 +23,6 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerViewBins;
     FloatingActionButton fabCreateBin;
 
-
     public HomeFragment() {
     }
 
@@ -60,7 +59,11 @@ public class HomeFragment extends Fragment {
     }
 
     public void onItemClick(Bin bin) {
-        Toast.makeText(getContext(), bin.toString(), Toast.LENGTH_SHORT).show();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_placeholder, BinDetailsFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void bindViews(View rootView) {

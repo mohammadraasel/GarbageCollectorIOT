@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fahimshahrierrasel.collectionnotifier.CollectionNotifier;
 import com.fahimshahrierrasel.collectionnotifier.R;
@@ -25,7 +26,6 @@ public class CreateBinFragment extends Fragment {
     EditText editTextTrigPin;
     EditText editTextEchoPin;
     EditText editTextNotifyLevel;
-    Button buttonViewAll;
     Button buttonAddSensor;
 
     private Socket mSocket;
@@ -57,6 +57,13 @@ public class CreateBinFragment extends Fragment {
             data.put("trig_pin", editTextTrigPin.getText().toString());
             data.put("echo_pin", editTextEchoPin.getText().toString());
             data.put("notify_level", editTextNotifyLevel.getText().toString());
+            data.put("latitude", "");
+            data.put("longitude", "");
+            data.put("status", "inactive");
+            data.put("current_level", "0");
+            data.put("tuned", "false");
+            data.put("count", "0");
+            data.put("depth", "0");
 
             mSocket.emit("create_sensor", new JSONObject(data));
             Log.d(TAG, "Data Emitted " + data.toString());
@@ -64,22 +71,11 @@ public class CreateBinFragment extends Fragment {
 
         mSocket.on("sensor_created", args -> {
             getActivity().runOnUiThread(() -> {
-                JSONObject obj = (JSONObject) args[0];
-
+                String status = (String) args[0];
+                Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
             });
         });
-
-        buttonViewAll.setOnClickListener(view -> {
-            mSocket.emit("get_all", new JSONObject());
-        });
-
-        mSocket.on("take_all", args -> {
-            getActivity().runOnUiThread(() -> {
-                String obj = (String) args[0];
-
-            });
-        });
-
 
         return root;
     }
@@ -89,7 +85,6 @@ public class CreateBinFragment extends Fragment {
         editTextTrigPin = rootView.findViewById(R.id.editText_trig_pin);
         editTextEchoPin = rootView.findViewById(R.id.editText_echo_pin);
         editTextNotifyLevel = rootView.findViewById(R.id.editText_notify_level);
-        buttonViewAll = rootView.findViewById(R.id.button_view_all);
         buttonAddSensor = rootView.findViewById(R.id.button_add_sensor);
     }
 }

@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="1dp"
-                android:text="10 times cleaned this month"
+                android:text="10 times cleaned"
                 android:textColor="@android:color/background_dark" />
 
             <TextView

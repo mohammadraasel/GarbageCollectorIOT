@@ -12,6 +12,7 @@ import com.fahimshahrierrasel.collectionnotifier.R;
 import com.fahimshahrierrasel.collectionnotifier.model.Bin;
 
 import java.util.List;
+import java.util.Locale;
 
 public class BinAdapter extends RecyclerView.Adapter<BinAdapter.ViewHolder> {
 
@@ -65,8 +66,8 @@ public class BinAdapter extends RecyclerView.Adapter<BinAdapter.ViewHolder> {
 
         public void bind(Bin bin, final Listener listener) {
             textViewBinName.setText(bin.getName());
-            textViewBinCleanCount.setText(bin.getCount());
-            textViewBinStatus.setText(bin.getStatus());
+            textViewBinCleanCount.setText(String.format(Locale.US, "Cleaned %d times", bin.getCount()));
+            textViewBinStatus.setText(String.format("Status: %s", bin.getStatus().toUpperCase()));
             itemView.setOnClickListener(view -> listener.onItemClick(bin));
         }
 

@@ -24,7 +24,7 @@ from twilio.rest import Client
 # import json
 # import pyrebase
 # import os
-sys.path.append('/home/pi/Desktop/newGMS/lcd')
+#sys.path.append('/home/pi/Desktop/newGMS/lcd')
 # import lcd
 
 conn = r.connect('192.168.0.4', 28015)
@@ -39,12 +39,12 @@ garbage = {}
 isRunning = True
 
 
-def garbage_calc(distance, trash_height):
-    print("Distance %d" % distance)
-    print("Trash Height %d" % trash_height)
-    garbage_percent = (1 - math.floor(distance) / trash_height) * 100
-    print(garbage_percent)
-    return round(garbage_percent)
+# def garbage_calc(distance, trash_height):
+#     print("Distance %d" % distance)
+#     print("Trash Height %d" % trash_height)
+#     garbage_percent = (1 - math.floor(distance) / trash_height) * 100
+#     print(garbage_percent)
+#     return round(garbage_percent)
 
 def database_change():
     print("Database Thread Started")
@@ -70,7 +70,7 @@ def run_sensor(trash):
     # location = Geocode(requests)
     # db = Database(conn, datetime)
     # notification = Notification(Client, False)
-    trash.initSensor(GPIO)
+    # trash.initSensor(GPIO)
     # lcd.lcd_init()
     # lcd.greetings()
 
@@ -79,16 +79,15 @@ def run_sensor(trash):
             if trash.TUNED is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
-                garbage['current'] = garbage_calc(
-                    math.floor(trash.getDistance()), bin_depth)
+                garbage['current'] = trash.garbage_calc()
                 # db.updateDatabase(trash.getSensorId(), garbage, location)
                 # garbage_monitor(
                 #     trash.getSensorId(),
                 #     garbage, notification, threshold=80)
             else:
                 print("Bin Not Tuned. Tunnning Now....")
-                garbage['depth'] = math.floor(trash.tuneSensor(GPIO, time))
-                print("Bin Depth %d" % bin_depth)
+                trash.tune_sensor(GPIO, time)
+                print("Bin Depth %d" % trash.DEPTH)
 
 def main():
     global isRunning
@@ -96,7 +95,7 @@ def main():
     sensor_id = sys.argv[1]
     bin = r.table('bin').get(sensor_id).run(conn)
     if bin is not None:
-        trash = Sensor(bin['name'], 0, int(bin['trig_pin']), int(bin['echo_pin']))
+        trash = Sensor.from_database(bin, GPIO)
         d_thread = threading.Thread(name='d_thread', target=database_change)
         d_thread.start()
         run_sensor(trash)

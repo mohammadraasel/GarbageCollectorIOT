@@ -27,28 +27,18 @@ from twilio.rest import Client
 #sys.path.append('/home/pi/Desktop/newGMS/lcd')
 # import lcd
 
-conn = r.connect('192.168.0.4', 28015)
+conn = r.connect('192.168.0.108', 28015)
 conn.use('pi')
 
 GPIO.setwarnings(False)
 GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
 
-bin_depth = 100
-garbage = {}
 isRunning = True
-
-
-# def garbage_calc(distance, trash_height):
-#     print("Distance %d" % distance)
-#     print("Trash Height %d" % trash_height)
-#     garbage_percent = (1 - math.floor(distance) / trash_height) * 100
-#     print(garbage_percent)
-#     return round(garbage_percent)
 
 def database_change():
     print("Database Thread Started")
-    conn2 = r.connect('192.168.0.4', 28015)
+    conn2 = r.connect('192.168.0.108', 28015)
     conn2.use('pi')
     cursor = r.table("status").filter(r.row['name'] == "Trash_01").changes().run(conn2)
     for document in cursor:
@@ -63,30 +53,24 @@ def change_running_state(state):
     global isRunning
     isRunning = state
 
+def update_bin_info(id, attrib, info):
+    r.table('bin').get(id).update({attrib : info}).run(conn)
+
 def run_sensor(trash):
     global isRunning
-    # print("Sensor Thread Started")
-    # trash = Sensor(name, dist, trig, echo)
-    # location = Geocode(requests)
-    # db = Database(conn, datetime)
-    # notification = Notification(Client, False)
-    # trash.initSensor(GPIO)
-    # lcd.lcd_init()
-    # lcd.greetings()
 
     while True:
         if isRunning:
             if trash.TUNED is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
-                garbage['current'] = trash.garbage_calc()
-                # db.updateDatabase(trash.getSensorId(), garbage, location)
-                # garbage_monitor(
-                #     trash.getSensorId(),
-                #     garbage, notification, threshold=80)
+                current_level = trash.garbage_calc()
+                update_bin_info(trash.ID, 'current_level', current_level)
             else:
                 print("Bin Not Tuned. Tunnning Now....")
                 trash.tune_sensor(GPIO, time)
+                update_bin_info(trash.ID, 'depth', trash.DEPTH)
+                update_bin_info(trash.ID, 'tuned', 'True')
                 print("Bin Depth %d" % trash.DEPTH)
 
 def main():

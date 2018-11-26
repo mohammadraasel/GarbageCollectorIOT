@@ -52,18 +52,18 @@ public class CreateBinFragment extends Fragment {
 
         buttonAddSensor.setOnClickListener(view -> {
 
-            Map<String, String> data = new HashMap<>();
+            Map<String, Object> data = new HashMap<>();
             data.put("name", editTextName.getText().toString());
-            data.put("trig_pin", editTextTrigPin.getText().toString());
-            data.put("echo_pin", editTextEchoPin.getText().toString());
-            data.put("notify_level", editTextNotifyLevel.getText().toString());
-            data.put("latitude", "");
-            data.put("longitude", "");
+            data.put("trig_pin", Integer.parseInt(editTextTrigPin.getText().toString()));
+            data.put("echo_pin", Integer.parseInt(editTextEchoPin.getText().toString()));
+            data.put("notify_level", Integer.parseInt(editTextNotifyLevel.getText().toString()));
+            data.put("latitude", 0f);
+            data.put("longitude", 0f);
             data.put("status", "inactive");
-            data.put("current_level", "0");
-            data.put("tuned", "false");
-            data.put("count", "0");
-            data.put("depth", "0");
+            data.put("current_level", 0);
+            data.put("tuned", false);
+            data.put("count", 0);
+            data.put("depth", 0);
 
             mSocket.emit("create_sensor", new JSONObject(data));
             Log.d(TAG, "Data Emitted " + data.toString());

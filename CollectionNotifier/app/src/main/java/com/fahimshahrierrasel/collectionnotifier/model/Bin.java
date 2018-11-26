@@ -14,37 +14,37 @@ public class Bin implements Parcelable {
     private int count;
     @SerializedName("current_level")
     @Expose
-    private String currentLevel;
+    private int currentLevel;
     @SerializedName("depth")
     @Expose
-    private String depth;
+    private int depth;
     @SerializedName("echo_pin")
     @Expose
-    private String echoPin;
+    private int echoPin;
     @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("latitude")
     @Expose
-    private String latitude;
+    private float latitude;
     @SerializedName("longitude")
     @Expose
-    private String longitude;
+    private float longitude;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("notify_level")
     @Expose
-    private String notifyLevel;
+    private int notifyLevel;
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("trig_pin")
     @Expose
-    private String trigPin;
+    private int trigPin;
     @SerializedName("tuned")
     @Expose
-    private String tuned;
+    private boolean tuned;
     public final static Parcelable.Creator<Bin> CREATOR = new Creator<Bin>() {
 
 
@@ -63,17 +63,17 @@ public class Bin implements Parcelable {
 
     protected Bin(Parcel in) {
         this.count = ((int) in.readValue((int.class.getClassLoader())));
-        this.currentLevel = ((String) in.readValue((String.class.getClassLoader())));
-        this.depth = ((String) in.readValue((String.class.getClassLoader())));
-        this.echoPin = ((String) in.readValue((String.class.getClassLoader())));
+        this.currentLevel = ((int) in.readValue((int.class.getClassLoader())));
+        this.depth = ((int) in.readValue((int.class.getClassLoader())));
+        this.echoPin = ((int) in.readValue((int.class.getClassLoader())));
         this.id = ((String) in.readValue((String.class.getClassLoader())));
-        this.latitude = ((String) in.readValue((String.class.getClassLoader())));
-        this.longitude = ((String) in.readValue((String.class.getClassLoader())));
+        this.latitude = ((float) in.readValue((float.class.getClassLoader())));
+        this.longitude = ((float) in.readValue((float.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.notifyLevel = ((String) in.readValue((String.class.getClassLoader())));
+        this.notifyLevel = ((int) in.readValue((int.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
-        this.trigPin = ((String) in.readValue((String.class.getClassLoader())));
-        this.tuned = ((String) in.readValue((String.class.getClassLoader())));
+        this.trigPin = ((int) in.readValue((int.class.getClassLoader())));
+        this.tuned = ((boolean) in.readValue((boolean.class.getClassLoader())));
     }
 
     public Bin() {
@@ -87,27 +87,27 @@ public class Bin implements Parcelable {
         this.count = count;
     }
 
-    public String getCurrentLevel() {
+    public int getCurrentLevel() {
         return currentLevel;
     }
 
-    public void setCurrentLevel(String currentLevel) {
+    public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
 
-    public String getDepth() {
+    public int getDepth() {
         return depth;
     }
 
-    public void setDepth(String depth) {
+    public void setDepth(int depth) {
         this.depth = depth;
     }
 
-    public String getEchoPin() {
+    public int getEchoPin() {
         return echoPin;
     }
 
-    public void setEchoPin(String echoPin) {
+    public void setEchoPin(int echoPin) {
         this.echoPin = echoPin;
     }
 
@@ -119,19 +119,19 @@ public class Bin implements Parcelable {
         this.id = id;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
@@ -143,11 +143,11 @@ public class Bin implements Parcelable {
         this.name = name;
     }
 
-    public String getNotifyLevel() {
+    public int getNotifyLevel() {
         return notifyLevel;
     }
 
-    public void setNotifyLevel(String notifyLevel) {
+    public void setNotifyLevel(int notifyLevel) {
         this.notifyLevel = notifyLevel;
     }
 
@@ -159,19 +159,19 @@ public class Bin implements Parcelable {
         this.status = status;
     }
 
-    public String getTrigPin() {
+    public int getTrigPin() {
         return trigPin;
     }
 
-    public void setTrigPin(String trigPin) {
+    public void setTrigPin(int trigPin) {
         this.trigPin = trigPin;
     }
 
-    public String getTuned() {
+    public boolean isTuned() {
         return tuned;
     }
 
-    public void setTuned(String tuned) {
+    public void setTuned(boolean tuned) {
         this.tuned = tuned;
     }
 

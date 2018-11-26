@@ -55,8 +55,10 @@ io.on('connection', (socket) => {
     // check if the bins are changed
     r.table('bin').changes().run(connection, function(err, cursor) {
         cursor.each((err, row) => {
-            // console.log(row.new_val);
-            // socket.emit('sensor_created', row.new_val);
+            if(row.new_val != null && row.old_val != null){
+                socket.emit('update_current_level', row.new_val);
+            }
+            
         });
     });
 

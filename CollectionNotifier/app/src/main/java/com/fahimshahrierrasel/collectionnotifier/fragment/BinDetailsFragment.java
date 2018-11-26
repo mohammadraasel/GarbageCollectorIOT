@@ -69,30 +69,35 @@ public class BinDetailsFragment extends Fragment {
         mSocket.connect();
         Gson gson = new Gson();
 
-        mSocket.on("take_bin", args -> {
-            activity.runOnUiThread(() -> {
-                JSONObject array = (JSONObject) args[0];
-                Bin bin = gson.fromJson(array.toString(), Bin.class);
+        mSocket.on("take_bin", args -> activity.runOnUiThread(() -> {
+            JSONObject jsonObject = (JSONObject) args[0];
+            Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
+            populateView(bin);
+            populateRecyclerView(bin);
+        }));
+
+        mSocket.on("bin_status_updated", args -> activity.runOnUiThread(() -> {
+            String response = (String) args[0];
+            Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+        }));
+
+        mSocket.on("update_current_level", args -> activity.runOnUiThread(() -> {
+            JSONObject jsonObject = (JSONObject) args[0];
+            Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
+            if(id.equals(bin.getId())) {
                 populateView(bin);
-                populateRecyclerView(bin);
-            });
-        });
-
-        mSocket.on("bin_status_updated", args -> {
-            activity.runOnUiThread(() -> {
-                String response = (String) args[0];
-                Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
-            });
-        });
-
+            }
+        }));
 
         switchBinStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                textViewSwitchBinStatusText.setText("Active");
+                textViewSwitchBinStatusText.setText(activity.getResources()
+                        .getText(R.string.active));
                 mSocket.emit("update_bin_status", id, "active");
             }
             else {
-                textViewSwitchBinStatusText.setText("Inactive");
+                textViewSwitchBinStatusText.setText(activity.getResources()
+                        .getText(R.string.inactive));
                 mSocket.emit("update_bin_status", id, "inactive");
             }
         });
@@ -104,10 +109,12 @@ public class BinDetailsFragment extends Fragment {
         progressBarBin.setProgress(bin.getCurrentLevel());
         textViewBinStatusText.setText(String.format("%s%% Full", bin.getCurrentLevel()));
         if(bin.getStatus().equals("active")) {
-            textViewSwitchBinStatusText.setText("Active");
+            textViewSwitchBinStatusText.setText(activity.getResources()
+                    .getText(R.string.active));
             switchBinStatus.setChecked(true);
         }else {
-            textViewSwitchBinStatusText.setText("Inactive");
+            textViewSwitchBinStatusText.setText(activity.getResources()
+                    .getText(R.string.inactive));
             switchBinStatus.setChecked(false);
         }
     }

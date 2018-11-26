@@ -80,7 +80,7 @@ def main():
     bin = r.table('bin').get(sensor_id).run(conn)
     if bin is not None:
         trash = Sensor.from_database(bin, GPIO)
-        d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin[id]})
+        d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
         d_thread.start()
         run_sensor(trash)
     

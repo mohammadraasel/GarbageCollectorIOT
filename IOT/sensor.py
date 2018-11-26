@@ -21,7 +21,7 @@ class Sensor:
         trig = int(bin['trig_pin'])
         echo = int(bin['echo_pin'])
         depth = int(bin["depth"])
-        tuned = bool(bin["tuned"])
+        tuned = bin["tuned"]
         return cls(id, name, trig, echo, depth, tuned, gpio)
 
     def initSensor(self, GPIO):

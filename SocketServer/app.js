@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 });
 
 var connection = null;
-r.connect( {host: '192.168.0.108', port: 28015}, function(err, conn) {
+r.connect( {host: '192.168.0.3', port: 28015}, function(err, conn) {
     if (err) throw err;
     connection = conn;
     connection.use("pi");
@@ -46,7 +46,9 @@ io.on('connection', (socket) => {
     // update bin status
     socket.on('update_bin_status', (id, status) => {
         r.table('bin').get(id).update({'status' : status}).run(connection, (err, result) => {
-
+            if(result.replaced == 1){
+                socket.emit('bin_status_updated', "Status Changed to " + status);
+            }
         });
     });
 

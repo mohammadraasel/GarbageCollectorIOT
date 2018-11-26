@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fahimshahrierrasel.collectionnotifier.CollectionNotifier;
 import com.fahimshahrierrasel.collectionnotifier.R;
@@ -77,12 +78,23 @@ public class BinDetailsFragment extends Fragment {
             });
         });
 
+        mSocket.on("bin_status_updated", args -> {
+            activity.runOnUiThread(() -> {
+                String response = (String) args[0];
+                Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+            });
+        });
+
 
         switchBinStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
+            if (isChecked) {
                 textViewSwitchBinStatusText.setText("Active");
-            else
+                mSocket.emit("update_bin_status", id, "active");
+            }
+            else {
                 textViewSwitchBinStatusText.setText("Inactive");
+                mSocket.emit("update_bin_status", id, "inactive");
+            }
         });
 
         return root;

@@ -40,7 +40,7 @@ def database_change(id):
     print("Database Thread Started")
     conn2 = r.connect('192.168.0.108', 28015)
     conn2.use('pi')
-    cursor = r.table("status").filter(r.row['id'] == id).changes().run(conn2)
+    cursor = r.table("bin").filter(r.row['id'] == id).changes().run(conn2)
     for document in cursor:
         if document['new_val']['status'] == 'inactive':
             print("Sensor is paused")

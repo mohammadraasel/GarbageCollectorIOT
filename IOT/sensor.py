@@ -5,13 +5,13 @@ class Sensor:
     SOUND_VELOCITY = 17150
 
     def __init__(self, id, name, trig, echo, depth, tuned, gpio):
-        self.ID = ""
+        self.ID = id
         self.NAME = name
         self.DISTANCE = 0
         self.TRIG = trig
         self.ECHO = echo
-        self.DEPTH = 100
-        self.TUNED = False
+        self.DEPTH = depth
+        self.TUNED = tuned
         self.initSensor(gpio)
 
     @classmethod
@@ -53,6 +53,7 @@ class Sensor:
         print("Distance %d" % self.DISTANCE)
         print("Trash Height %d" % self.DEPTH)
         garbage_percent = (1 - math.floor(self.DISTANCE) / self.DEPTH) * 100
+        garbage_percent = 0 if garbage_percent < 0 else garbage_percent
         print(garbage_percent)
         return round(garbage_percent)
 

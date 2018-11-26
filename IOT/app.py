@@ -36,11 +36,11 @@ GPIO.setmode(GPIO.BOARD)
 
 isRunning = True
 
-def database_change():
+def database_change(id):
     print("Database Thread Started")
     conn2 = r.connect('192.168.0.108', 28015)
     conn2.use('pi')
-    cursor = r.table("status").filter(r.row['name'] == "Trash_01").changes().run(conn2)
+    cursor = r.table("status").filter(r.row['id'] == id).changes().run(conn2)
     for document in cursor:
         if document['new_val']['status'] == 'inactive':
             print("Sensor is paused")
@@ -64,7 +64,7 @@ def run_sensor(trash):
             if trash.TUNED is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
-                current_level = trash.garbage_calc()
+                current_level = trash.garbage_calc() 
                 update_bin_info(trash.ID, 'current_level', current_level)
             else:
                 print("Bin Not Tuned. Tunnning Now....")
@@ -80,7 +80,7 @@ def main():
     bin = r.table('bin').get(sensor_id).run(conn)
     if bin is not None:
         trash = Sensor.from_database(bin, GPIO)
-        d_thread = threading.Thread(name='d_thread', target=database_change)
+        d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin[id]})
         d_thread.start()
         run_sensor(trash)
     

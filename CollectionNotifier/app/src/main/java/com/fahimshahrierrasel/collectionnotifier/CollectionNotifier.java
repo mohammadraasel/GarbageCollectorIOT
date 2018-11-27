@@ -11,7 +11,7 @@ public class CollectionNotifier extends Application {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://192.168.0.3:3000");
+            mSocket = IO.socket("http://192.168.0.108:3000");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

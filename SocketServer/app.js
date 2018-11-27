@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 });
 
 var connection = null;
-r.connect( {host: '192.168.0.3', port: 28015}, function(err, conn) {
+r.connect( {host: '192.168.0.108', port: 28015}, function(err, conn) {
     if (err) throw err;
     connection = conn;
     connection.use("pi");

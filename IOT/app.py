@@ -45,7 +45,7 @@ def database_change(id):
         if document['new_val']['status'] == 'inactive':
             print("Sensor is paused")
             change_running_state(False)
-        else:
+        elif document['new_val']['status'] == 'active':
             print("sensor is running")
             change_running_state(True)
 
@@ -70,7 +70,7 @@ def run_sensor(trash):
                 print("Bin Not Tuned. Tunnning Now....")
                 trash.tune_sensor(GPIO, time)
                 update_bin_info(trash.ID, 'depth', trash.DEPTH)
-                update_bin_info(trash.ID, 'tuned', 'True')
+                update_bin_info(trash.ID, 'tuned', True)
                 print("Bin Depth %d" % trash.DEPTH)
 
 def main():

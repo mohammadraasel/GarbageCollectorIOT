@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class BinDetailsFragment extends Fragment {
     private Socket mSocket;
     private String id;
     private FragmentActivity activity;
+    private String TAG = getClass().getSimpleName();
 
     public BinDetailsFragment() {
     }
@@ -72,10 +74,11 @@ public class BinDetailsFragment extends Fragment {
         mSocket.on("take_bin", args -> activity.runOnUiThread(() -> {
             JSONObject jsonObject = (JSONObject) args[0];
             Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
-            populateView(bin);
-            populateRecyclerView(bin);
+            if(id.equals(bin.getId())){
+                populateView(bin);
+                populateRecyclerView(bin);
+            }
         }));
-
         mSocket.on("bin_status_updated", args -> activity.runOnUiThread(() -> {
             String response = (String) args[0];
             Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
@@ -85,7 +88,7 @@ public class BinDetailsFragment extends Fragment {
             JSONObject jsonObject = (JSONObject) args[0];
             Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
             if(id.equals(bin.getId())) {
-                populateView(bin);
+                updateCurrentBinLevel(bin);
             }
         }));
 
@@ -93,16 +96,23 @@ public class BinDetailsFragment extends Fragment {
             if (isChecked) {
                 textViewSwitchBinStatusText.setText(activity.getResources()
                         .getText(R.string.active));
+                Log.d(TAG, id + " is now activating");
                 mSocket.emit("update_bin_status", id, "active");
             }
             else {
                 textViewSwitchBinStatusText.setText(activity.getResources()
                         .getText(R.string.inactive));
+                Log.d(TAG, id + " is now deactivating");
                 mSocket.emit("update_bin_status", id, "inactive");
             }
         });
 
         return root;
+    }
+
+    private void updateCurrentBinLevel(Bin bin) {
+        progressBarBin.setProgress(bin.getCurrentLevel());
+        textViewBinStatusText.setText(String.format("%s%% Full", bin.getCurrentLevel()));
     }
 
     private void populateView(Bin bin) {

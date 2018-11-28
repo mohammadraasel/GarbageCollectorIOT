@@ -70,7 +70,7 @@ def run_sensor(trash):
     global tune
 
     while True:
-        if isRunning:
+        if (isRunning and trash.STATUS) is True:
             if (trash.TUNED and tune) is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)

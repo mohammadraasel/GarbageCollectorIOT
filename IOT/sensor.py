@@ -4,7 +4,7 @@ class Sensor:
     # Sound Velocity in centi meter
     SOUND_VELOCITY = 17150
 
-    def __init__(self, id, name, trig, echo, depth, tuned, gpio):
+    def __init__(self, id, name, trig, echo, depth, tuned, status, gpio):
         self.ID = id
         self.NAME = name
         self.DISTANCE = 0
@@ -12,6 +12,7 @@ class Sensor:
         self.ECHO = echo
         self.DEPTH = depth
         self.TUNED = tuned
+        self.STATUS = status
         self.initSensor(gpio)
 
     @classmethod
@@ -22,7 +23,8 @@ class Sensor:
         echo = int(bin['echo_pin'])
         depth = int(bin["depth"])
         tuned = bin["tuned"]
-        return cls(id, name, trig, echo, depth, tuned, gpio)
+        status = bin["status"]
+        return cls(id, name, trig, echo, depth, tuned, status, gpio)
 
     def initSensor(self, GPIO):
         GPIO.setup(self.ECHO, GPIO.IN)
@@ -44,10 +46,11 @@ class Sensor:
             pulse_start = TIME.time()
         while GPIO.input(self.ECHO) == True:
             pulse_end = TIME.time()
-
-        pulse_duration = pulse_end - pulse_start
-        distance = pulse_duration * self.SOUND_VELOCITY
-        self.DISTANCE = distance
+        
+        if pulse_end and pulse_start:
+            pulse_duration = pulse_end - pulse_start
+            distance = pulse_duration * self.SOUND_VELOCITY
+            self.DISTANCE = distance
 
     def garbage_calc(self):
         print("Distance %d" % self.DISTANCE)

@@ -70,7 +70,7 @@ def run_sensor(trash):
     global tune
 
     while True:
-        if (isRunning and trash.STATUS) is True:
+        if isRunning:
             if (trash.TUNED and tune) is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
@@ -90,6 +90,8 @@ def main():
     sensor_id = sys.argv[1]
     bin = r.table('bin').get(sensor_id).run(conn)
     if bin is not None:
+        if bin["status"] =="inactive":
+            isRunning = False
         trash = Sensor.from_database(bin, GPIO)
         d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
         d_thread.start()

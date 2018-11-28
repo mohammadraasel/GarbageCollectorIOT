@@ -8,11 +8,11 @@ import multiprocessing as mp
 conn1 = r.connect('192.168.0.108', 28015)
 # conn2 = r.connect('localhost', 28015)
 
- conn1.use('pi')
+conn1.use('pi')
 # conn2.use('pi')
 
 def run_bin_sensor(id):
-    subprocess.call(['python3', 'app.py', id)
+    subprocess.call(['python3', 'app.py', id])
 
 # def data1():
 # 	cursor1 = r.table("bin").changes().run(conn1)
@@ -30,8 +30,14 @@ def main():
     # # Get all the bins from database which are active
     cursor = r.table("bin").filter(r.row["status"] == "active").run(conn1)
     for document in cursor:
-        processes.append(mp.Process(target=run_bin_sensor, args=(document['id']),))
+        processes.append(mp.Process(target=run_bin_sensor, args=(document['id'],)))
         print("Starting Sensor Program Using Trigger {} and Echo {}".format(document['trig_pin'], document['echo_pin']))
+    
+    for process in processes:
+        process.start()
+
+    for process in processes:
+        process.join()
 
     # data1_t.start()
     # # data2_t.start()

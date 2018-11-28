@@ -35,6 +35,7 @@ GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
 
 isRunning = True
+tune = True
 
 def database_change(id):
     print("Database Thread Started")
@@ -49,19 +50,28 @@ def database_change(id):
             print("sensor is running")
             change_running_state(True)
 
+        if document['new_val']['tuned'] == False:
+            tune_now()
+
+
 def change_running_state(state):
     global isRunning
     isRunning = state
+
+def tune_now():
+    global tune 
+    tune = False
 
 def update_bin_info(id, attrib, info):
     r.table('bin').get(id).update({attrib : info}).run(conn)
 
 def run_sensor(trash):
     global isRunning
+    global tune
 
     while True:
         if isRunning:
-            if trash.TUNED is True:
+            if (trash.TUNED and tune) is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
                 current_level = trash.garbage_calc() 
@@ -71,6 +81,7 @@ def run_sensor(trash):
                 trash.tune_sensor(GPIO, time)
                 update_bin_info(trash.ID, 'depth', trash.DEPTH)
                 update_bin_info(trash.ID, 'tuned', True)
+                tune = True
                 print("Bin Depth %d" % trash.DEPTH)
 
 def main():

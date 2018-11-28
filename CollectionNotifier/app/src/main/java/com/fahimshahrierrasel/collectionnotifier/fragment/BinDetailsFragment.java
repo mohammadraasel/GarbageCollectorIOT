@@ -27,7 +27,9 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BinDetailsFragment extends Fragment {
     /**
@@ -36,6 +38,7 @@ public class BinDetailsFragment extends Fragment {
     ProgressBar progressBarBin;
     TextView textViewBinStatusText;
     TextView buttonEditBin;
+    TextView buttonTuneBin;
     Switch switchBinStatus;
     TextView textViewSwitchBinStatusText;
     RecyclerView recyclerViewOptions;
@@ -115,6 +118,13 @@ public class BinDetailsFragment extends Fragment {
                     .commit();
         });
 
+        buttonTuneBin.setOnClickListener(view -> {
+            Map<String, Object> data = new HashMap<>();
+            data.put("tuned", false);
+            mSocket.emit("tune_bin", id, data);
+            Toast.makeText(activity, "Bin tuning now", Toast.LENGTH_SHORT).show();
+        });
+
         return root;
     }
 
@@ -164,6 +174,7 @@ public class BinDetailsFragment extends Fragment {
         progressBarBin = rootView.findViewById(R.id.progress_bar_bin);
         textViewBinStatusText = rootView.findViewById(R.id.text_view_bin_status_text);
         buttonEditBin = rootView.findViewById(R.id.button_edit_bin);
+        buttonTuneBin = rootView.findViewById(R.id.button_tune_bin);
         switchBinStatus = rootView.findViewById(R.id.switch_bin_status);
         textViewSwitchBinStatusText = rootView.findViewById(R.id.text_view_switch_bin_status_text);
         recyclerViewOptions = rootView.findViewById(R.id.recycler_view_options);

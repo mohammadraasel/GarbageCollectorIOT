@@ -47,20 +47,37 @@
                 android:text="@string/bin_text"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/button_edit_bin"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingStart="0dp"
-                android:paddingTop="15dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="15dp"
-                android:text="@string/edit"
-                android:textColor="@color/colorAccent" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/button_edit_bin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="0dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/edit"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/button_tune_bin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="15dp"
+                    android:text="@string/tune"
+                    android:textColor="@color/colorAccent" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

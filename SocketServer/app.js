@@ -4,6 +4,10 @@ const cors = require('cors');
 const http = require('http');
 const r = require('rethinkdb');
 
+const accountSid = 'AC43f2e70a926835350757b73d4ac6e3b4';
+const authToken = '12d647fb9f7e5779626fb855f99a0b32';
+const client = require('twilio')(accountSid, authToken);
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -57,6 +61,9 @@ io.on('connection', (socket) => {
         cursor.each((err, row) => {
             if(row.new_val != null && row.old_val != null){
                 socket.emit('update_current_level', row.new_val);
+                if(row.new_val.current_level >= row.new_val.notify_level) {
+                    send_sms(`Bin ${row.new_val.name} is almost full, Please clean this now`, "+19386665994", "+8801841714244")
+                }
             }
             
         });
@@ -79,6 +86,17 @@ io.on('connection', (socket) => {
         });
     });
 });
+
+let send_sms = (msg, send_from, send_to) => {
+    client.messages
+        .create({
+            body: msg,
+            from: send_from,
+            to: send_to
+        })
+        .then(message => console.log(message.sid))
+        .done();
+}
 
 server.listen(3000, '0.0.0.0', function(){
   console.log(`Server running on ${server.address().address} on port ${server.address().port}`);

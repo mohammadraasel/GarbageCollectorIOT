@@ -10,7 +10,8 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "rethinkdb": "^2.3.3",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "twilio": "^3.24.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"

@@ -107,6 +107,14 @@ public class BinDetailsFragment extends Fragment {
             }
         });
 
+        buttonEditBin.setOnClickListener(view -> {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_placeholder, BinUpdateFragment.newInstance(id))
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         return root;
     }
 

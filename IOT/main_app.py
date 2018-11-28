@@ -28,7 +28,7 @@ def main():
     # data2_t = threading.Thread(target=data2)
     processes = []
     # # Get all the bins from database which are active
-    cursor = r.table("bin").filter(r.row["status"] == "active").run(conn1)
+    cursor = r.table("bin").run(conn1)
     for document in cursor:
         processes.append(mp.Process(target=run_bin_sensor, args=(document['id'],)))
         print("Starting Sensor Program Using Trigger {} and Echo {}".format(document['trig_pin'], document['echo_pin']))

@@ -121,7 +121,7 @@ public class BinDetailsFragment extends Fragment {
         buttonTuneBin.setOnClickListener(view -> {
             Map<String, Object> data = new HashMap<>();
             data.put("tuned", false);
-            mSocket.emit("tune_bin", id, data);
+            mSocket.emit("tune_bin", id, new JSONObject(data));
             Toast.makeText(activity, "Bin tuning now", Toast.LENGTH_SHORT).show();
         });
 

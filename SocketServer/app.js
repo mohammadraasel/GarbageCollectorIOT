@@ -65,7 +65,8 @@ io.on('connection', (socket) => {
 
     // tune bin now
     socket.on('tune_bin', (id, data) => {
-        r.table('bin').get(id).update(data).run(connection, (err, result) => {});
+        r.table('bin').get(id).update(data).run(connection, (err, result) => {
+        });
     });
 
     // check if the bins are changed

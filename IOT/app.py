@@ -21,11 +21,6 @@ from sensor import Sensor
 
 from twilio.rest import Client
 
-# import json
-# import pyrebase
-# import os
-#sys.path.append('/home/pi/Desktop/newGMS/lcd')
-# import lcd
 
 conn = r.connect('192.168.0.108', 28015)
 conn.use('pi')
@@ -33,7 +28,8 @@ conn.use('pi')
 GPIO.setwarnings(False)
 GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
-
+cleaningFlag = {"garbageExist":False,"inactiveOccured":False, "activeOccured":False}
+totalCleaned = 0
 isRunning = True
 tune = True
 
@@ -46,9 +42,12 @@ def database_change(id):
         if document['new_val']['status'] == 'inactive':
             print("Sensor is paused")
             change_running_state(False)
+            cleaningFlag["inactiveOccured"] = True
+
         elif document['new_val']['status'] == 'active':
             print("sensor is running")
             change_running_state(True)
+            cleaningFlag["activeOccured"] = True 
 
         if document['new_val']['tuned'] == False:
             tune_now()
@@ -65,17 +64,37 @@ def tune_now():
 def update_bin_info(id, attrib, info):
     r.table('bin').get(id).update({attrib : info}).run(conn)
 
+def update_bin_location(id,latitude, longitude):
+    r.table('bin').get(id).update({"latitude": latitude, "longitude":longitude}).run(conn)
+
+def clean_counter(id, current_level):
+    global totalCleaned
+    global cleaningFlag
+    if current_level == 0 and (cleaningFlag["garbageExist"] and cleaningFlag["inactiveOccured"] and cleaningFlag["activeOccured"]) is True:
+        totalCleaned += 1
+        update_bin_info(id, 'count', totalCleaned)
+        cleaningFlag = {"garbageExist": False, "inactiveOccured": False, "activeOccured": False}
+
+
 def run_sensor(trash):
     global isRunning
     global tune
+    geocode = Geocode(requests)
+    location = geocode.trackLocation()
+    update_bin_location(trash.ID, location["latitude"], location["longitude"])
 
     while True:
         if isRunning:
             if (trash.TUNED and tune) is True:
                 trash.measureDistance(GPIO, time)
                 time.sleep(2)
-                current_level = trash.garbage_calc() 
+                current_level = trash.garbage_calc()
+                if current_level > 30:
+                    cleaningFlag["garbageExist"] = True
                 update_bin_info(trash.ID, 'current_level', current_level)
+                clean_counter(trash.ID, current_level)
+                
+
             else:
                 print("Bin Not Tuned. Tunnning Now....")
                 trash.tune_sensor(GPIO, time)

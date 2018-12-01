@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
                     // if sms not sent before sent now and add it in remember list
                     if (!send_sms_remember.includes(row.new_val.name)) {
                         // sending sms
-                        send_sms(`Bin ${row.new_val.name} is almost full, Please clean this now`, "+19386665994", "+8801841714244")
+                        send_sms(`Bin ${row.new_val.name} is almost full, Please clean this now. Location:{latitude:${row.new_val.latitude}, longitude:${row.new_val.longitude}}`, "+19386665994", "+8801841714244")
                         // remembering sent sms
                         send_sms_remember.push(row.new_val.name)
                     }

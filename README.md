@@ -4,7 +4,7 @@ Garbage collection system built using internet of things makes smart garbage col
 
 ### Devices
 
-* Raspberry Pi
+* Raspberry Pi 3 model B
 * Ultrasonic Sensor
 
 ### Technology

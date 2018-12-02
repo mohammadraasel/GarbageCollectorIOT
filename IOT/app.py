@@ -73,6 +73,7 @@ def clean_counter(id, current_level):
     if current_level == 0 and (cleaningFlag["garbageExist"] and cleaningFlag["inactiveOccured"] and cleaningFlag["activeOccured"]) is True:
         totalCleaned += 1
         update_bin_info(id, 'count', totalCleaned)
+        update_bin_info(id, 'last_cleaned', datetime.now().strftime('%A,%d %B,%y'))
         cleaningFlag = {"garbageExist": False, "inactiveOccured": False, "activeOccured": False}
 
 

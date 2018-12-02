@@ -64,6 +64,8 @@ public class CreateBinFragment extends Fragment {
             data.put("tuned", false);
             data.put("count", 0);
             data.put("depth", 0);
+            data.put("last_cleaned", "");
+
 
             mSocket.emit("create_sensor", new JSONObject(data));
             Log.d(TAG, "Data Emitted " + data.toString());

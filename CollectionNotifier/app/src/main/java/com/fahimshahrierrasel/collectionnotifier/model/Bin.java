@@ -39,6 +39,9 @@ public class Bin implements Parcelable {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("last_cleaned")
+    @Expose
+    private String lastCleaned;
     @SerializedName("trig_pin")
     @Expose
     private int trigPin;
@@ -74,6 +77,7 @@ public class Bin implements Parcelable {
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.trigPin = ((int) in.readValue((int.class.getClassLoader())));
         this.tuned = ((boolean) in.readValue((boolean.class.getClassLoader())));
+        this.lastCleaned = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public Bin() {
@@ -143,6 +147,10 @@ public class Bin implements Parcelable {
         this.name = name;
     }
 
+    public String getLastCleaned(){return lastCleaned;}
+
+    public void setLastCleaned(String lastCleaned) { this.lastCleaned = lastCleaned;}
+
     public int getNotifyLevel() {
         return notifyLevel;
     }
@@ -188,6 +196,7 @@ public class Bin implements Parcelable {
         dest.writeValue(status);
         dest.writeValue(trigPin);
         dest.writeValue(tuned);
+        dest.writeValue(lastCleaned);
     }
 
     public int describeContents() {

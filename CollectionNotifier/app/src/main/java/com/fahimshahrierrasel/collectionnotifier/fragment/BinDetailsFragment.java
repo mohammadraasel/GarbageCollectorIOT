@@ -149,8 +149,8 @@ public class BinDetailsFragment extends Fragment {
 
     private void populateRecyclerView(Bin bin) {
         List<Option> options = new ArrayList<>();
-        options.add(new Option(R.drawable.ic_location, "Location", String.valueOf(bin.getLatitude()) + String.valueOf(bin.getLongitude())));
-        options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times"));
+        options.add(new Option(R.drawable.ic_location, "Location", "lat:"+String.valueOf(bin.getLatitude()) +", lon:"+ String.valueOf(bin.getLongitude())));
+        options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times, Last Cleaned:"+String.valueOf(bin.getLastCleaned())));
         options.add(new Option(R.drawable.ic_trigger, "Trigger Pin", String.valueOf(bin.getTrigPin())));
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
         options.add(new Option(R.drawable.ic_level, "Notification Level", String.valueOf(bin.getNotifyLevel())));

@@ -9,11 +9,7 @@ import RPi.GPIO as GPIO
 
 from geocode import Geocode
 
-from notification import Notification
-
 import requests
-
-from rethink import Database
 
 import rethinkdb as r
 
@@ -28,10 +24,12 @@ conn.use('pi')
 GPIO.setwarnings(False)
 GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
+
 cleaningFlag = {"garbageExist":False,"inactiveOccured":False, "activeOccured":False}
 totalCleaned = 0
 isRunning = True
 tune = True
+press = 0
 
 def database_change(id):
     print("Database Thread Started")
@@ -52,6 +50,16 @@ def database_change(id):
         if document['new_val']['tuned'] == False:
             tune_now()
 
+def button_press_listener(pin):
+    global isRunning
+    while True:
+        input_state = GPIO.input(int(pin))
+        if input_state == False:
+            if isRunning:
+                change_running_state(False)
+            else:
+                change_running_state(True)
+            time.sleep(1)
 
 def change_running_state(state):
     global isRunning
@@ -106,15 +114,17 @@ def run_sensor(trash):
 
 def main():
     global isRunning
-
     sensor_id = sys.argv[1]
     bin = r.table('bin').get(sensor_id).run(conn)
     if bin is not None:
         if bin["status"] =="inactive":
             isRunning = False
         trash = Sensor.from_database(bin, GPIO)
+        GPIO.setup(int(bin['button']), GPIO.IN, pull_up_down=GPIO.PUD_UP) 
         d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
+        b_thread = threading.Thread(name='button_press_listener', target=button_press_listener, kwargs={'pin': bin['button']})
         d_thread.start()
+        b_thread.start()
         run_sensor(trash)
     
 if __name__ == '__main__':

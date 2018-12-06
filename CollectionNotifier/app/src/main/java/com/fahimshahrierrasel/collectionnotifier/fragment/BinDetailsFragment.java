@@ -131,6 +131,8 @@ public class BinDetailsFragment extends Fragment {
     private void updateCurrentBinLevel(Bin bin) {
         progressBarBin.setProgress(bin.getCurrentLevel());
         textViewBinStatusText.setText(String.format("%s%% Full", bin.getCurrentLevel()));
+        populateRecyclerView(bin);
+
     }
 
     private void populateView(Bin bin) {
@@ -154,7 +156,7 @@ public class BinDetailsFragment extends Fragment {
         options.add(new Option(R.drawable.ic_trigger, "Trigger Pin", String.valueOf(bin.getTrigPin())));
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
         options.add(new Option(R.drawable.ic_level, "Notification Level", String.valueOf(bin.getNotifyLevel())));
-//        options.add(new Option(R.drawable.ic_status, "Status", "Active"));
+        options.add(new Option(R.drawable.ic_echo, "Physical Button", String.valueOf(bin.getButton())));
 
 
         OptionAdapter optionAdapter = new OptionAdapter(options);

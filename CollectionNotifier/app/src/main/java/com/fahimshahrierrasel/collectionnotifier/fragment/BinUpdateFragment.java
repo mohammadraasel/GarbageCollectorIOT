@@ -29,6 +29,7 @@ public class BinUpdateFragment extends Fragment {
     EditText editTextEchoPin;
     EditText editTextNotifyLevel;
     Button buttonAddSensor;
+    EditText physicalButton;
     private FragmentActivity activity;
     private String id;
     private Socket mSocket;
@@ -81,6 +82,7 @@ public class BinUpdateFragment extends Fragment {
             data.put("trig_pin", Integer.parseInt(editTextTrigPin.getText().toString()));
             data.put("echo_pin", Integer.parseInt(editTextEchoPin.getText().toString()));
             data.put("notify_level", Integer.parseInt(editTextNotifyLevel.getText().toString()));
+            data.put("button", Integer.parseInt(physicalButton.getText().toString()));
 
             mSocket.emit("update_sensor", id, new JSONObject(data));
             Log.d(TAG, "Data Emitted " + data.toString());
@@ -93,6 +95,7 @@ public class BinUpdateFragment extends Fragment {
         editTextEchoPin.setText(String.valueOf(bin.getEchoPin()));
         editTextTrigPin.setText(String.valueOf(bin.getTrigPin()));
         editTextNotifyLevel.setText(String.valueOf(bin.getNotifyLevel()));
+        physicalButton.setText(String.valueOf(bin.getButton()));
     }
 
     @Override
@@ -108,5 +111,6 @@ public class BinUpdateFragment extends Fragment {
         editTextEchoPin = rootView.findViewById(R.id.editText_echo_pin);
         editTextNotifyLevel = rootView.findViewById(R.id.editText_notify_level);
         buttonAddSensor = rootView.findViewById(R.id.button_add_sensor);
+        physicalButton = rootView.findViewById(R.id.editText_physical_button_pin);
     }
 }

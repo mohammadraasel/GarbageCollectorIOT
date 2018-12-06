@@ -3,12 +3,15 @@ package com.fahimshahrierrasel.collectionnotifier.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Bin implements Parcelable {
+public class Bin implements Parcelable
+{
 
+    @SerializedName("button")
+    @Expose
+    private int button;
     @SerializedName("count")
     @Expose
     private int count;
@@ -24,12 +27,15 @@ public class Bin implements Parcelable {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("last_cleaned")
+    @Expose
+    private String lastCleaned;
     @SerializedName("latitude")
     @Expose
-    private float latitude;
+    private String latitude;
     @SerializedName("longitude")
     @Expose
-    private float longitude;
+    private String longitude;
     @SerializedName("name")
     @Expose
     private String name;
@@ -39,9 +45,6 @@ public class Bin implements Parcelable {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("last_cleaned")
-    @Expose
-    private String lastCleaned;
     @SerializedName("trig_pin")
     @Expose
     private int trigPin;
@@ -62,25 +65,74 @@ public class Bin implements Parcelable {
             return (new Bin[size]);
         }
 
-    };
+    }
+            ;
 
     protected Bin(Parcel in) {
+        this.button = ((int) in.readValue((int.class.getClassLoader())));
         this.count = ((int) in.readValue((int.class.getClassLoader())));
         this.currentLevel = ((int) in.readValue((int.class.getClassLoader())));
         this.depth = ((int) in.readValue((int.class.getClassLoader())));
         this.echoPin = ((int) in.readValue((int.class.getClassLoader())));
         this.id = ((String) in.readValue((String.class.getClassLoader())));
-        this.latitude = ((float) in.readValue((float.class.getClassLoader())));
-        this.longitude = ((float) in.readValue((float.class.getClassLoader())));
+        this.lastCleaned = ((String) in.readValue((String.class.getClassLoader())));
+        this.latitude = ((String) in.readValue((String.class.getClassLoader())));
+        this.longitude = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.notifyLevel = ((int) in.readValue((int.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.trigPin = ((int) in.readValue((int.class.getClassLoader())));
         this.tuned = ((boolean) in.readValue((boolean.class.getClassLoader())));
-        this.lastCleaned = ((String) in.readValue((String.class.getClassLoader())));
     }
 
+    /**
+     * No args constructor for use in serialization
+     *
+     */
     public Bin() {
+    }
+
+    /**
+     *
+     * @param id
+     * @param echoPin
+     * @param count
+     * @param status
+     * @param button
+     * @param tuned
+     * @param name
+     * @param currentLevel
+     * @param trigPin
+     * @param longitude
+     * @param notifyLevel
+     * @param latitude
+     * @param lastCleaned
+     * @param depth
+     */
+    public Bin(int button, int count, int currentLevel, int depth, int echoPin, String id, String lastCleaned, String latitude, String longitude, String name, int notifyLevel, String status, int trigPin, boolean tuned) {
+        super();
+        this.button = button;
+        this.count = count;
+        this.currentLevel = currentLevel;
+        this.depth = depth;
+        this.echoPin = echoPin;
+        this.id = id;
+        this.lastCleaned = lastCleaned;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.name = name;
+        this.notifyLevel = notifyLevel;
+        this.status = status;
+        this.trigPin = trigPin;
+        this.tuned = tuned;
+    }
+
+    public int getButton() {
+        return button;
+    }
+
+    public void setButton(int button) {
+        this.button = button;
     }
 
     public int getCount() {
@@ -123,19 +175,27 @@ public class Bin implements Parcelable {
         this.id = id;
     }
 
-    public float getLatitude() {
+    public String getLastCleaned() {
+        return lastCleaned;
+    }
+
+    public void setLastCleaned(String lastCleaned) {
+        this.lastCleaned = lastCleaned;
+    }
+
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -146,10 +206,6 @@ public class Bin implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getLastCleaned(){return lastCleaned;}
-
-    public void setLastCleaned(String lastCleaned) { this.lastCleaned = lastCleaned;}
 
     public int getNotifyLevel() {
         return notifyLevel;
@@ -184,11 +240,13 @@ public class Bin implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(button);
         dest.writeValue(count);
         dest.writeValue(currentLevel);
         dest.writeValue(depth);
         dest.writeValue(echoPin);
         dest.writeValue(id);
+        dest.writeValue(lastCleaned);
         dest.writeValue(latitude);
         dest.writeValue(longitude);
         dest.writeValue(name);
@@ -196,7 +254,6 @@ public class Bin implements Parcelable {
         dest.writeValue(status);
         dest.writeValue(trigPin);
         dest.writeValue(tuned);
-        dest.writeValue(lastCleaned);
     }
 
     public int describeContents() {

@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
                 if (row.new_val.status != row.old_val.status) {
                     console.log(row.new_val.id + " bin's status_changed to " +
                         row.new_val.status);
-                    socket.emit('bin_status_updated', row.new_val.status);
+                    socket.emit('bin_status_updated', row.new_val);
                 }
 
                 // emitting count when count is greater than older one

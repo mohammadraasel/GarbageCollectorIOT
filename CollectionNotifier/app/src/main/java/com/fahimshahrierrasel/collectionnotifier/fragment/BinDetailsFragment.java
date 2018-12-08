@@ -89,15 +89,18 @@ public class BinDetailsFragment extends Fragment {
         }));
 
         mSocket.on("bin_status_updated", args -> activity.runOnUiThread(() -> {
-            String response = (String) args[0];
-            if (response.equals("active")) {
-                textViewSwitchBinStatusText.setText(activity.getResources()
-                        .getText(R.string.active));
-                switchBinStatus.setChecked(true);
-            } else if (response.equals("inactive")) {
-                textViewSwitchBinStatusText.setText(activity.getResources()
-                        .getText(R.string.inactive));
-                switchBinStatus.setChecked(false);
+            JSONObject jsonObject = (JSONObject) args[0];
+            Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
+            if (id.equals(bin.getId())) {
+                if (bin.getStatus().equals("active")) {
+                    textViewSwitchBinStatusText.setText(activity.getResources()
+                            .getText(R.string.active));
+                    switchBinStatus.setChecked(true);
+                } else if (bin.getStatus().equals("inactive")) {
+                    textViewSwitchBinStatusText.setText(activity.getResources()
+                            .getText(R.string.inactive));
+                    switchBinStatus.setChecked(false);
+                }
             }
         }));
 

@@ -28,6 +28,7 @@ public class CreateBinFragment extends Fragment {
     EditText editTextNotifyLevel;
     Button buttonAddSensor;
     EditText physicalButton;
+    EditText ledPin;
 
     private Socket mSocket;
     private String TAG = getClass().getSimpleName();
@@ -67,6 +68,7 @@ public class CreateBinFragment extends Fragment {
             data.put("depth", 0);
             data.put("last_cleaned", "");
             data.put("button", Integer.parseInt(physicalButton.getText().toString()));
+            data.put("led", Integer.parseInt(ledPin.getText().toString()));
 
 
             mSocket.emit("create_sensor", new JSONObject(data));
@@ -91,5 +93,6 @@ public class CreateBinFragment extends Fragment {
         editTextNotifyLevel = rootView.findViewById(R.id.editText_notify_level);
         buttonAddSensor = rootView.findViewById(R.id.button_add_sensor);
         physicalButton = rootView.findViewById(R.id.editText_physical_button_pin);
+        ledPin = rootView.findViewById(R.id.editText_led_pin);
     }
 }

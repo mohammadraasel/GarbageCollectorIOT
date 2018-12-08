@@ -179,6 +179,7 @@ public class BinDetailsFragment extends Fragment {
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
         options.add(new Option(R.drawable.ic_level, "Notification Level", String.valueOf(bin.getNotifyLevel())));
         options.add(new Option(R.drawable.ic_echo, "Physical Button", String.valueOf(bin.getButton())));
+        options.add(new Option(R.drawable.ic_trigger, "Led Pin", String.valueOf(bin.getLed())));
 
 
         OptionAdapter optionAdapter = new OptionAdapter(options, this::onOptionClick);

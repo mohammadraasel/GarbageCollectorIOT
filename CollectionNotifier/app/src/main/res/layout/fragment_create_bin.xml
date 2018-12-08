@@ -56,6 +56,16 @@
         android:hint="@string/physical_button_pin"
         android:inputType="numberDecimal"
         android:padding="10dp" />
+    <EditText
+        android:id="@+id/editText_led_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/back_edit_text"
+        android:ems="10"
+        android:hint="@string/led_pin"
+        android:inputType="numberDecimal"
+        android:padding="10dp" />
 
 
     <Button

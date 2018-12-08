@@ -12,6 +12,9 @@ public class Bin implements Parcelable
     @SerializedName("button")
     @Expose
     private int button;
+    @SerializedName("led")
+    @Expose
+    private int led;
     @SerializedName("count")
     @Expose
     private int count;
@@ -82,6 +85,7 @@ public class Bin implements Parcelable
         this.notifyLevel = ((int) in.readValue((int.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.trigPin = ((int) in.readValue((int.class.getClassLoader())));
+        this.led = ((int) in.readValue((int.class.getClassLoader())));
         this.tuned = ((boolean) in.readValue((boolean.class.getClassLoader())));
     }
 
@@ -109,7 +113,7 @@ public class Bin implements Parcelable
      * @param lastCleaned
      * @param depth
      */
-    public Bin(int button, int count, int currentLevel, int depth, int echoPin, String id, String lastCleaned, String latitude, String longitude, String name, int notifyLevel, String status, int trigPin, boolean tuned) {
+    public Bin(int button, int count,int led, int currentLevel, int depth, int echoPin, String id, String lastCleaned, String latitude, String longitude, String name, int notifyLevel, String status, int trigPin, boolean tuned) {
         super();
         this.button = button;
         this.count = count;
@@ -125,6 +129,7 @@ public class Bin implements Parcelable
         this.status = status;
         this.trigPin = trigPin;
         this.tuned = tuned;
+        this.led = led;
     }
 
     public int getButton() {
@@ -133,6 +138,13 @@ public class Bin implements Parcelable
 
     public void setButton(int button) {
         this.button = button;
+    }
+    public int getLed() {
+        return led;
+    }
+
+    public void setLed(int led) {
+        this.led = led;
     }
 
     public int getCount() {
@@ -254,6 +266,7 @@ public class Bin implements Parcelable
         dest.writeValue(status);
         dest.writeValue(trigPin);
         dest.writeValue(tuned);
+        dest.writeValue(led);
     }
 
     public int describeContents() {

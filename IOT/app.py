@@ -139,6 +139,7 @@ def run_sensor(trash):
                 print("Bin Depth %d" % trash.DEPTH)
 
 def main():
+    global totalCleaned 
     global isRunning
     sensor_id = sys.argv[1]
     bin = r.table('bin').get(sensor_id).run(conn)
@@ -148,6 +149,7 @@ def main():
         trash = Sensor.from_database(bin, GPIO)
         GPIO.setup(int(bin['button']), GPIO.IN, pull_up_down=GPIO.PUD_UP) 
         GPIO.setup(int(bin['led']), GPIO.OUT)
+        totalCleaned = int(bin["count"])
         d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
         b_thread = threading.Thread(name='button_press_listener', target=button_press_listener, kwargs={'pin': bin['button'], 'id': bin['id']})
         d_thread.start()

@@ -5,6 +5,7 @@ const http = require('http');
 const r = require('rethinkdb');
 const fs = require('fs');
 const ini = require('ini');
+const axios = require('axios');
 
 const config = ini.parse(fs.readFileSync('./../config.ini', 'utf-8'));
 const db_host = config.DEFAULT.DATABASE_HOST;
@@ -80,7 +81,7 @@ io.on('connection', (socket) => {
                     // if sms not sent before sent now and add it in remember list
                     if (!send_sms_remember.includes(row.new_val.name)) {
                         // sending sms
-                        send_sms(`Bin ${row.new_val.name} is almost full, Please clean this now. Location:{latitude:${row.new_val.latitude}, longitude:${row.new_val.longitude}}`, "+19386665994", "+8801841714244")
+                        send_sms(`Bin ${row.new_val.name} is almost full, Please clean this now. Location: latitude:${row.new_val.latitude}, longitude:${row.new_val.longitude}`,"+8801841714244")
                         // remembering sent sms
                         send_sms_remember.push(row.new_val.name)
                     }
@@ -129,16 +130,19 @@ io.on('connection', (socket) => {
     });
 });
 
-let send_sms = (msg, send_from, send_to) => {
-    client.messages
-        .create({
-            body: msg,
-            from: send_from,
-            to: send_to
+let send_sms = (msg, send_to) => {
+    let url = `http://api.greenweb.com.bd/api.php?token=eb488cff46525f4a2199ee010178943f&to=${send_to}&message=${msg}`;
+    console.log(url);
+    axios.get(url)
+        .then(response => {
+            console.log("SMS sent");
+            
         })
-        .then(message => console.log(message.sid))
-        .done();
+        .catch(error => {
+            console.log(error);
+        });
 }
+
 
 server.listen(3000, '0.0.0.0', function () {
     console.log(`Server running on ${server.address().address} on port ${server.address().port}`);

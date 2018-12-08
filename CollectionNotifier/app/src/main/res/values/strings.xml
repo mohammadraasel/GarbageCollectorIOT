@@ -12,4 +12,5 @@
     <string name="inactive">Inactive</string>
     <string name="tune">Tune</string>
     <string name="physical_button_pin">Physical Button Pin</string>
+    <string name="led_pin">Led Pin</string>
 </resources>

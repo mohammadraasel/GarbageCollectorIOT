@@ -189,7 +189,7 @@ public class BinDetailsFragment extends Fragment {
             if(currentBin != null) {
                 String uri = "http://maps.google.com/maps?daddr=" + currentBin.getLatitude() + "," +
                         currentBin.getLongitude() + " (" + currentBin.getName() + ")";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setPackage("com.google.android.apps.maps");
                 if (activity != null)
                     activity.startActivity(intent);

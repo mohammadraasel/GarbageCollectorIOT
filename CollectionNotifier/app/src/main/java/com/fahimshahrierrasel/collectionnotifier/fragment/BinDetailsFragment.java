@@ -1,5 +1,7 @@
 package com.fahimshahrierrasel.collectionnotifier.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -165,7 +167,7 @@ public class BinDetailsFragment extends Fragment {
 
     private void populateRecyclerView(Bin bin) {
         List<Option> options = new ArrayList<>();
-        options.add(new Option(R.drawable.ic_location, "Location", "lat:" + String.valueOf(bin.getLatitude()) + ", lon:" + String.valueOf(bin.getLongitude())));
+        options.add(new Option(R.drawable.ic_location, "Location", "geo:" + String.valueOf(bin.getLatitude()) + "," + String.valueOf(bin.getLongitude())));
         options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times, Last Cleaned:" + String.valueOf(bin.getLastCleaned())));
         options.add(new Option(R.drawable.ic_trigger, "Trigger Pin", String.valueOf(bin.getTrigPin())));
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
@@ -173,10 +175,19 @@ public class BinDetailsFragment extends Fragment {
         options.add(new Option(R.drawable.ic_echo, "Physical Button", String.valueOf(bin.getButton())));
 
 
-        OptionAdapter optionAdapter = new OptionAdapter(options);
+        OptionAdapter optionAdapter = new OptionAdapter(options, this::onOptionClick);
         recyclerViewOptions.setAdapter(optionAdapter);
         recyclerViewOptions.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+    }
+
+    private void onOptionClick(Option option) {
+        if (option.getText().contains("geo")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(option.getText()));
+
+            if (activity != null)
+                activity.startActivity(intent);
+        }
     }
 
     @Override

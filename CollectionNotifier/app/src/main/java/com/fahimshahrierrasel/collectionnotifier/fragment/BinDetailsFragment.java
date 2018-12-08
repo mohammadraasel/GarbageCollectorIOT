@@ -66,7 +66,7 @@ public class BinDetailsFragment extends Fragment {
 
         activity = getActivity();
 
-        if(getArguments() != null)
+        if (getArguments() != null)
             id = getArguments().getString("id");
 
         CollectionNotifier app = (CollectionNotifier) activity.getApplication();
@@ -77,21 +77,38 @@ public class BinDetailsFragment extends Fragment {
         mSocket.on("take_bin", args -> activity.runOnUiThread(() -> {
             JSONObject jsonObject = (JSONObject) args[0];
             Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
-            if(id.equals(bin.getId())){
+            if (id.equals(bin.getId())) {
                 populateView(bin);
                 populateRecyclerView(bin);
             }
         }));
+
         mSocket.on("bin_status_updated", args -> activity.runOnUiThread(() -> {
             String response = (String) args[0];
-            Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+            if (response.equals("active")) {
+                textViewSwitchBinStatusText.setText(activity.getResources()
+                        .getText(R.string.active));
+                switchBinStatus.setChecked(true);
+            } else if (response.equals("inactive")) {
+                textViewSwitchBinStatusText.setText(activity.getResources()
+                        .getText(R.string.inactive));
+                switchBinStatus.setChecked(false);
+            }
         }));
 
         mSocket.on("update_current_level", args -> activity.runOnUiThread(() -> {
             JSONObject jsonObject = (JSONObject) args[0];
             Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
-            if(id.equals(bin.getId())) {
+            if (id.equals(bin.getId())) {
                 updateCurrentBinLevel(bin);
+            }
+        }));
+
+        mSocket.on("count_updated", args -> activity.runOnUiThread(() -> {
+            JSONObject jsonObject = (JSONObject) args[0];
+            Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
+            if (id.equals(bin.getId())) {
+                populateRecyclerView(bin);
             }
         }));
 
@@ -101,8 +118,7 @@ public class BinDetailsFragment extends Fragment {
                         .getText(R.string.active));
                 Log.d(TAG, id + " is now activating");
                 mSocket.emit("update_bin_status", id, "active");
-            }
-            else {
+            } else {
                 textViewSwitchBinStatusText.setText(activity.getResources()
                         .getText(R.string.inactive));
                 Log.d(TAG, id + " is now deactivating");
@@ -131,18 +147,16 @@ public class BinDetailsFragment extends Fragment {
     private void updateCurrentBinLevel(Bin bin) {
         progressBarBin.setProgress(bin.getCurrentLevel());
         textViewBinStatusText.setText(String.format("%s%% Full", bin.getCurrentLevel()));
-        populateRecyclerView(bin);
-
     }
 
     private void populateView(Bin bin) {
         progressBarBin.setProgress(bin.getCurrentLevel());
         textViewBinStatusText.setText(String.format("%s%% Full", bin.getCurrentLevel()));
-        if(bin.getStatus().equals("active")) {
+        if (bin.getStatus().equals("active")) {
             textViewSwitchBinStatusText.setText(activity.getResources()
                     .getText(R.string.active));
             switchBinStatus.setChecked(true);
-        }else {
+        } else {
             textViewSwitchBinStatusText.setText(activity.getResources()
                     .getText(R.string.inactive));
             switchBinStatus.setChecked(false);
@@ -151,8 +165,8 @@ public class BinDetailsFragment extends Fragment {
 
     private void populateRecyclerView(Bin bin) {
         List<Option> options = new ArrayList<>();
-        options.add(new Option(R.drawable.ic_location, "Location", "lat:"+String.valueOf(bin.getLatitude()) +", lon:"+ String.valueOf(bin.getLongitude())));
-        options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times, Last Cleaned:"+String.valueOf(bin.getLastCleaned())));
+        options.add(new Option(R.drawable.ic_location, "Location", "lat:" + String.valueOf(bin.getLatitude()) + ", lon:" + String.valueOf(bin.getLongitude())));
+        options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times, Last Cleaned:" + String.valueOf(bin.getLastCleaned())));
         options.add(new Option(R.drawable.ic_trigger, "Trigger Pin", String.valueOf(bin.getTrigPin())));
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
         options.add(new Option(R.drawable.ic_level, "Notification Level", String.valueOf(bin.getNotifyLevel())));
@@ -168,7 +182,7 @@ public class BinDetailsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(id != null)
+        if (id != null)
             mSocket.emit("get_bin", id);
     }
 

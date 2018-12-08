@@ -3,9 +3,14 @@ import rethinkdb as r
 import threading
 import subprocess
 import multiprocessing as mp
+from configparser import ConfigParser
 
+config = ConfigParser()
+config.read('./../config.ini')
 
-conn1 = r.connect('192.168.0.108', 28015)
+db_host = config['DEFAULT']['DATABASE_HOST']
+
+conn1 = r.connect(db_host, 28015)
 # conn2 = r.connect('localhost', 28015)
 
 conn1.use('pi')

@@ -17,9 +17,14 @@ from sensor import Sensor
 from lcd import LcdDisplay
 
 from twilio.rest import Client
+from configparser import ConfigParser
 
+config = ConfigParser()
+config.read('./../config.ini')
 
-conn = r.connect('192.168.0.108', 28015)
+db_host = config['DEFAULT']['DATABASE_HOST']
+
+conn = r.connect(db_host, 28015)
 conn.use('pi')
 
 GPIO.setwarnings(False)
@@ -34,8 +39,9 @@ tune = True
 press = 0
 
 def database_change(id):
+    global db_host
     print("Database Thread Started")
-    conn2 = r.connect('192.168.0.108', 28015)
+    conn2 = r.connect(db_host, 28015)
     conn2.use('pi')
     cursor = r.table("bin").filter(r.row['id'] == id).changes().run(conn2)
     for document in cursor:

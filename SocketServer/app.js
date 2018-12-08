@@ -3,9 +3,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
 const r = require('rethinkdb');
+const fs = require('fs');
+const ini = require('ini');
 
-const accountSid = 'AC43f2e70a926835350757b73d4ac6e3b4';
-const authToken = '12d647fb9f7e5779626fb855f99a0b32';
+const config = ini.parse(fs.readFileSync('./../config.ini', 'utf-8'));
+const db_host = config.DEFAULT.DATABASE_HOST;
+const asid = config.TWILLIO.ASID
+const token = config.TWILLIO.TOKEN
+
+const accountSid = asid;
+const authToken = token;
 const client = require('twilio')(accountSid, authToken);
 
 const app = express();
@@ -27,7 +34,7 @@ app.get('/', function (req, res) {
 
 var connection = null;
 r.connect({
-    host: '192.168.0.108',
+    host: db_host,
     port: 28015
 }, function (err, conn) {
     if (err) throw err;

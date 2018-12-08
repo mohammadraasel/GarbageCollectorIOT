@@ -63,17 +63,12 @@ io.on('connection', (socket) => {
     socket.on('update_bin_status', (id, status) => {
         r.table('bin').get(id).update({
             'status': status
-        }).run(connection, (err, result) => {
-            if (result.replaced == 1) {
-                socket.emit('bin_status_updated', "Status Changed to " + status);
-            }
-        });
+        }).run(connection, (err, result) => {});
     });
 
     // tune bin now
     socket.on('tune_bin', (id, data) => {
-        r.table('bin').get(id).update(data).run(connection, (err, result) => {
-        });
+        r.table('bin').get(id).update(data).run(connection, (err, result) => {});
     });
 
     // check if the bins are changed
@@ -98,8 +93,21 @@ io.on('connection', (socket) => {
                         send_sms_remember.splice(index, 1)
                     }
                 }
-            }
 
+                // emitting status when status chaging
+                if (row.new_val.status != row.old_val.status) {
+                    console.log(row.new_val.id + " bin's status_changed to " +
+                        row.new_val.status);
+                    socket.emit('bin_status_updated', status);
+                }
+
+                // emitting count when count is greater than older one
+                if (row.new_val.count > row.old_val.count) {
+                    console.log(row.new_val.id + " bin's count updated to " +
+                        row.new_val.count);
+                    socket.emit('count_updated', row.new_val);
+                }
+            }
         });
     });
 

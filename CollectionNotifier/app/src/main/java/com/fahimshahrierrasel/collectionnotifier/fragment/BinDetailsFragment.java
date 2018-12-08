@@ -48,6 +48,7 @@ public class BinDetailsFragment extends Fragment {
     private String id;
     private FragmentActivity activity;
     private String TAG = getClass().getSimpleName();
+    private Bin currentBin;
 
     public BinDetailsFragment() {
     }
@@ -80,8 +81,10 @@ public class BinDetailsFragment extends Fragment {
             JSONObject jsonObject = (JSONObject) args[0];
             Bin bin = gson.fromJson(jsonObject.toString(), Bin.class);
             if (id.equals(bin.getId())) {
+                currentBin = bin;
                 populateView(bin);
                 populateRecyclerView(bin);
+
             }
         }));
 
@@ -167,7 +170,7 @@ public class BinDetailsFragment extends Fragment {
 
     private void populateRecyclerView(Bin bin) {
         List<Option> options = new ArrayList<>();
-        options.add(new Option(R.drawable.ic_location, "Location", "geo:" + String.valueOf(bin.getLatitude()) + "," + String.valueOf(bin.getLongitude())));
+        options.add(new Option(R.drawable.ic_location, "Location", "Open in Google Map"));
         options.add(new Option(R.drawable.ic_access_time, "Total Cleaned", String.valueOf(bin.getCount()) + " Times, Last Cleaned:" + String.valueOf(bin.getLastCleaned())));
         options.add(new Option(R.drawable.ic_trigger, "Trigger Pin", String.valueOf(bin.getTrigPin())));
         options.add(new Option(R.drawable.ic_location, "Echo Pin", String.valueOf(bin.getEchoPin())));
@@ -182,11 +185,15 @@ public class BinDetailsFragment extends Fragment {
     }
 
     private void onOptionClick(Option option) {
-        if (option.getText().contains("geo")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(option.getText()));
-
-            if (activity != null)
-                activity.startActivity(intent);
+        if (option.getText().contains("Map")) {
+            if(currentBin != null) {
+                String uri = "http://maps.google.com/maps?daddr=" + currentBin.getLatitude() + "," +
+                        currentBin.getLongitude() + " (" + currentBin.getName() + ")";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri);
+                intent.setPackage("com.google.android.apps.maps");
+                if (activity != null)
+                    activity.startActivity(intent);
+            }
         }
     }
 

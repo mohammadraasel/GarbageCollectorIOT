@@ -58,6 +58,11 @@ def database_change(id):
         if document['new_val']['tuned'] == False:
             tune_now()
 
+        if document['new_val']['current_level'] >= document['new_val']['notify_level']:
+            GPIO.output(int(document['new_val']['led']), GPIO.HIGH)
+        else:
+            GPIO.output(int(document['new_val']['led']), GPIO.LOW)
+
 def button_press_listener(pin, id):
     global isRunning
     while True:
@@ -142,6 +147,7 @@ def main():
             isRunning = False
         trash = Sensor.from_database(bin, GPIO)
         GPIO.setup(int(bin['button']), GPIO.IN, pull_up_down=GPIO.PUD_UP) 
+        GPIO.setup(int(bin['led']), GPIO.OUT)
         d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
         b_thread = threading.Thread(name='button_press_listener', target=button_press_listener, kwargs={'pin': bin['button'], 'id': bin['id']})
         d_thread.start()

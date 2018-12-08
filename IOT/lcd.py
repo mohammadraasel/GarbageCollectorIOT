@@ -2,12 +2,12 @@ class LcdDisplay:
     def __init__(self, gpio, time):
         self.GPIO = gpio
         self.TIME = time
-        self.LCD_RS = 5
-        self.LCD_E = 12
-        self.LCD_D4 = 6
-        self.LCD_D5 = 13
-        self.LCD_D6 = 16
-        self.LCD_D7 = 26
+        self.LCD_RS = 15
+        self.LCD_E = 16
+        self.LCD_D4 = 21
+        self.LCD_D5 = 22
+        self.LCD_D6 = 23
+        self.LCD_D7 = 24
         # Define some device constants
         self.LCD_WIDTH = 16    # Maximum characters per line
         self.LCD_CHR = True
@@ -93,7 +93,7 @@ class LcdDisplay:
 
 
     def greetings(self):
-        self.show("Welcome To", "SIS")
+        self.show("Welcome To", "GMS")
         self.TIME.sleep(1)
         self.show("getting", "ready..")
         self.TIME.sleep(1)

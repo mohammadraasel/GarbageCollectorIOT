@@ -14,6 +14,7 @@ import requests
 import rethinkdb as r
 
 from sensor import Sensor
+from lcd import LcdDisplay
 
 from twilio.rest import Client
 
@@ -24,6 +25,7 @@ conn.use('pi')
 GPIO.setwarnings(False)
 GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
+lcd = LcdDisplay(GPIO, time)
 
 cleaningFlag = {"garbageExist":False,"inactiveOccured":False, "activeOccured":False}
 totalCleaned = 0
@@ -50,16 +52,29 @@ def database_change(id):
         if document['new_val']['tuned'] == False:
             tune_now()
 
-def button_press_listener(pin):
+def button_press_listener(pin, id):
     global isRunning
     while True:
         input_state = GPIO.input(int(pin))
         if input_state == False:
             if isRunning:
+                print("Sensor is paused")
                 change_running_state(False)
+                update_bin_info(id,'status','inactive')
+                cleaningFlag["inactiveOccured"] = True
             else:
+                print("sensor is running")
                 change_running_state(True)
+                update_bin_info(id, 'status', 'active')
+                cleaningFlag["activeOccured"] = True
             time.sleep(1)
+
+            
+def show_on_lcd(current_level, bin_id):
+    pass
+
+
+
 
 def change_running_state(state):
     global isRunning
@@ -122,7 +137,8 @@ def main():
         trash = Sensor.from_database(bin, GPIO)
         GPIO.setup(int(bin['button']), GPIO.IN, pull_up_down=GPIO.PUD_UP) 
         d_thread = threading.Thread(name='database_thread', target=database_change, kwargs={'id': bin['id']})
-        b_thread = threading.Thread(name='button_press_listener', target=button_press_listener, kwargs={'pin': bin['button']})
+        b_thread = threading.Thread(name='button_press_listener', target=button_press_listener, kwargs={
+                                    'pin': bin['button'], 'id': bin['id']})
         d_thread.start()
         b_thread.start()
         run_sensor(trash)
